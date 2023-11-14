@@ -7,7 +7,7 @@ class Blackjack(Game):
         self._dealerHand = []
         self._rodadas = 0
         self._apostaInicial = apostaInicial
-        self.caixa  = caixa
+        self.caixa = caixa
 
     def iniciar(self):
         participantes = []
