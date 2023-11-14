@@ -1,6 +1,16 @@
 from decks import Deck, Card
 
 
+class Game:
+    def __init__(self, players) -> None:
+        self._players = players
+        self._pote = 0
+        self._caixa = 0
+
+    def getplayers(self):
+        return self._players
+
+
 class Player:
     def __init__(self, nome, fichas):
         self._name = nome
@@ -73,20 +83,29 @@ class Player:
         return len(self._hand)
 
     def __int__(self):
-        return self._fichas
+        soma = 0
+        for card in self._hand:
+            soma += int(card)
+        
+        return soma
 
     def __str__(self):
         return f"{self._name}"
 
 
-class Game:
-    def __init__(self, players) -> None:
-        self._players = players
-        self._pote = 0
-        self._caixa = 0
+class Blackjack(Game):
+    def __init__(self, players, caixa, apostaInicial=20) -> None:
+        super().__init__(players)
+        self._dealerHand = []
+        self._rodadas = 0
+        self._apostaInicial = apostaInicial
+        self.caixa = caixa
 
-    def getplayers(self):
-        return self._players
+    def iniciar(self):
+        participantes = []
+        for player in self._players:
+            if player.testeFichas(self._apostaInicial):
+                participantes.append(player)
 
 
 class Poker(Game):
