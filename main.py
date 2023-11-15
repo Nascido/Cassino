@@ -1,6 +1,5 @@
 
-from games import Player
-from blackJack import Blackjack
+from games import Player, Blackjack
 
 """
     Cassino Royal
@@ -12,4 +11,4 @@ player3 = Player("Carioca", 1000)
 
 players = [player1, player2, player3]
 
-blakjackGame = Blackjack()
+blakjackGame = Blackjack(players, 5000)
