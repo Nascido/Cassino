@@ -1,4 +1,4 @@
-from decks import Deck, Card
+from decks import Card
 
 
 class Game:
@@ -106,74 +106,3 @@ class Blackjack(Game):
         for player in self._players:
             if player.testeFichas(self._apostaInicial):
                 participantes.append(player)
-
-
-class Poker(Game):
-    def __init__(self, players, bigBlind=50, aumentoBlind=50) -> None:
-        super().__init__(players)
-        # Até 5 cartas
-        self._tableCards = []
-
-        # fase 0: Pre-flop
-        # fase 1: Flop
-        # fase 2: Turn
-        # fase 3: River
-        # fase 4: Showdown
-        self._fase = 0
-
-        self._rodadas = 0
-
-        # Blinds
-        self._big = bigBlind
-        self._passo = aumentoBlind
-
-        # Side Pote
-        self._sidePote = []
-
-    def iniciar(self):
-        while self._fase < 4 and self.lenPlayers() > 1:
-            baralho = Deck()
-            baralho.shuffle()
-
-            if self._fase == 0:
-                baralho.distribuir(self._players, 2)
-                self.rodadaDeApostas(self._players, blind=True)
-
-            elif self._fase == 1:
-                baralho.distribuir([self._tableCards], 3)
-
-            else:
-                self._tableCards.append(baralho.pop())
-
-    def rodadaDeApostas(self, participantes, blind=False):
-        if blind:
-            small = participantes[0]
-            big = participantes[1]
-            i = 0
-            for p in [big, small]:
-                i += 1
-                try:
-                    self._pote += p.apostar(self._big//i)
-                except ValueError:
-                    self.createSidepot(self._big//i)
-
-            for player in participantes[2:]:
-                print("################################################")
-                print(f"{player} - Opções disponíveis:")
-                print(f"1 - Cobrir: {self._big}")
-                print("2 - Aumentar")
-                print("3 - Desistir")
-                print(f"{str(player[0]), str(player[1])}")
-                input("Opção escolhida: ")
-
-    def definirGanhador(self):
-        pass
-
-    def createSidepot(self, value):
-        pass
-
-    def showdown(self):
-        pass
-
-    def lenPlayers(self):
-        return len(self._players)
