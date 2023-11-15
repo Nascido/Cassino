@@ -1,5 +1,6 @@
 
-from tkinter import tk
+import tkinter
+
 
 class Interface():
     pass
