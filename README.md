@@ -2,6 +2,4 @@
 
 ## Trabalho de Conclusão da disciplina POOII
 
-### Jogos
- - Blackjack
- - Poker
+ - Implementação do Jogo Blackjack para um Cassino digital.
