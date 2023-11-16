@@ -2,36 +2,26 @@
 import tkinter as tk
 from tkinter import messagebox as mbox
 
-window = tk.Tk()
-window.title("Login Casino")
-window.geometry("340x400")
+from games import Blackjack
 
-def login():
-    mbox.showinfo(title="User Entry", message="Você logou com sucesso!")
-    
 
-# window.configure(bg="#333333")
+class Casino:
+    def __init__(self, players):
+        self.players = players
+        self.caixa = 5000
 
-# Widgets
-login_label = tk.Label(window, text="Login")
+    def show(self):
+        root = tk.Tk()
+        root.title("Bem Vindo(a)!")
+        root.geometry("600x300")
 
-name_label = tk.Label(window, text="Nome")
-name_entry = tk.Entry(window)
+        tk.Label(root, text="Jogos Disponíveis: ").pack()
+        tk.Button(root, text="Blackjack").pack()
+        tk.Button(root, text="Poker").pack()
 
-password_label = tk.Label(window, text="Senha")
-password_entry = tk.Entry(window, show='*')
+        root.mainloop()
 
-login_button = tk.Button(window, text="Entrar", command=login)
+    def iniciarBlackjack(self):
+        blackjackGame = Blackjack(self.players, self.caixa)
 
-# Placing Widgets
-login_label.grid(row=0, column=0, columnspan=2)
-
-name_label.grid(row=1, column=0)
-name_entry.grid(row=1, column=1)
-
-password_label.grid(row=2, column=0)
-password_entry.grid(row=2, column=1)
-
-login_button.grid(row=3, column=0, columnspan=2)
-
-window.mainloop()
+        blackjackGame.iniciar()
