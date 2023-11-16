@@ -1,4 +1,4 @@
-from decks import Card
+from decks import Deck, Card
 
 
 class Game:
@@ -96,13 +96,26 @@ class Player:
 class Blackjack(Game):
     def __init__(self, players, caixa, apostaInicial=20) -> None:
         super().__init__(players)
-        self._dealerHand = []
-        self._rodadas = 0
+        self._dealer = Player("Dealer", caixa)
+        self._deck = Deck(blackjack=True)
         self._apostaInicial = apostaInicial
-        self.caixa = caixa
 
     def iniciar(self):
-        participantes = []
-        for player in self._players:
-            if player.testeFichas(self._apostaInicial):
-                participantes.append(player)
+        self._deck.shuffle()
+
+        self._dealer.append(self._deck.pop())
+
+        self._deck.distribuir(self._players, 2)
+
+    def hit(self, player):
+        if int(player) < 21:
+            self._deck.givecard(player)
+        else:
+            raise ValueError("Valor 21 já alcançado ou estourado")
+
+    def dealerTurn(self):
+        dealer = self._dealer
+        deck = self._deck
+
+        while int(dealer) < 17:
+            deck.givecard(dealer)
