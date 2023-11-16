@@ -36,6 +36,15 @@ class Deck:
     def insert(self, index, item):
         self._deck.insert(index, item)
 
+    def givecard(self, player, quantidade=1):
+        if len(self) > quantidade:
+            card = self.pop()
+            player.append(card)
+
+            return card
+        else:
+            raise ValueError("Número de cartas do deck insuficiente!")
+
     def distribuir(self, players, handsize):
         tamcards = len(players)*handsize
         tamdeck = len(self)
@@ -105,7 +114,7 @@ class Card:
                 case "K":
                     valorComum = valorCartaAlta
                 case "A":
-                    valorComum = valorCartaAlta
+                    valorComum = 11
                     valorAlternativo = 1
                 case _:
                     valorComum = int(self._tipo)
