@@ -12,12 +12,15 @@ class Game:
 
 
 class Player:
-    def __init__(self, nome, fichas):
+    def __init__(self, nome, cpf, senha, fichas=100):
         self._name = nome
+        self._cpf = cpf
+        self._senha = senha
         self._hand = []
         self._fichas = fichas
         self.index = 0
 
+    # Métodos do Player
     def comprarCarta(self, deck):
         carta = deck.pop()
         self._hand.append(carta)
@@ -58,11 +61,21 @@ class Player:
     def insert(self, index, item):
         self._hand.insert(index, item)
 
+    # Getters
     def getname(self):
         return self._name
 
+    def getcpf(self):
+        return self._cpf
+
+    def getsenha(self):
+        return self._senha
+
     def getfichas(self):
         return self._fichas
+
+    def getplayerinfo(self):
+        return self._name, self._cpf, self._senha, self._fichas
 
     # Builtins
     def __getitem__(self, item):
@@ -83,11 +96,7 @@ class Player:
         return len(self._hand)
 
     def __int__(self):
-        soma = 0
-        for card in self._hand:
-            soma += int(card)
-        
-        return soma
+        return sum(self)
 
     def __str__(self):
         return f"{self._name}"
@@ -96,7 +105,7 @@ class Player:
 class Blackjack(Game):
     def __init__(self, players, caixa, apostaInicial=20) -> None:
         super().__init__(players)
-        self._dealer = Player("Dealer", caixa)
+        self._dealer = Player("Dealer", caixa, 1234)
         self._deck = Deck(blackjack=True)
         self._apostaInicial = apostaInicial
 
