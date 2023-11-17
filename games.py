@@ -92,7 +92,7 @@ class Player(Hand):
         else:
             raise ValueError
 
-    def receber(self, valor):
+    def receberFichas(self, valor):
         self._fichas += valor
 
     # Getters
@@ -125,7 +125,7 @@ class Dealer(Hand):
         if self.gametipe:
             self.auto = True
 
-    def pegarCarta(self):
+    def comprarCarta(self):
         self._hand.append(self.deck.pop())
 
     def iniciar(self, players):
@@ -168,6 +168,11 @@ class Blackjack(Game):
         else:
             raise ValueError("Valor 21 já alcançado ou estourado")
 
-    def dealerTurn(self):
-        while self._dealer.sum21() < 17:
-            self._dealer.pegarCarta()
+    def dealerHit(self):
+        if self._dealer.sum21() < 17:
+            self._dealer.comprarCarta()
+            return True
+
+        else:
+            return False
+        
