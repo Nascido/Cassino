@@ -15,3 +15,5 @@ players = [player1, player2, player3]
 cassino = Casino(players)
 
 cassino.iniciarBlackjack()
+
+cassino.show()
