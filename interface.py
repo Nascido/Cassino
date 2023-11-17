@@ -1,6 +1,6 @@
 
 import tkinter as tk
-from tkinter import messagebox as mbox
+# from tkinter import messagebox as mbox
 
 from games import Blackjack
 
@@ -12,12 +12,16 @@ class Casino:
 
     def show(self):
         root = tk.Tk()
-        root.title("Bem Vindo(a)!")
-        root.geometry("600x300")
+        root.title("Cassino Royal")
+        root.geometry("300x100")
 
-        tk.Label(root, text="Jogos Disponíveis: ").pack()
-        tk.Button(root, text="Blackjack").pack()
-        tk.Button(root, text="Poker").pack()
+        bemvindo = tk.Label(text="Bem vindo(a), selecione a opção desejada:")
+        login = tk.Button(text="Login")
+        cadastro = tk.Button(text="Cadastro")
+
+        bemvindo.pack()
+        login.pack()
+        cadastro.pack()
 
         root.mainloop()
 
