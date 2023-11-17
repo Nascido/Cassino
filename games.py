@@ -118,18 +118,18 @@ class Player(Hand):
 class Dealer(Hand):
     def __init__(self, blackjack=False):
         super().__init__()
-        self.gametipe = blackjack
+        self.gametype = blackjack
         self.auto = False
         self.deck = None
 
-        if self.gametipe:
+        if self.gametype:
             self.auto = True
 
     def comprarCarta(self):
         self._hand.append(self.deck.pop())
 
     def iniciar(self, players):
-        self.deck = Deck(blackjack=self.gametipe)
+        self.deck = Deck(blackjack=self.gametype)
         self.deck.shuffle()
 
         for player in players:
@@ -175,4 +175,3 @@ class Blackjack(Game):
 
         else:
             return False
-        
