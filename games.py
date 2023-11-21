@@ -4,7 +4,6 @@ from decks import Deck, Card
 class Game:
     def __init__(self, players) -> None:
         self._players = players
-        self._pote = 0
         self._caixa = 0
 
     def getplayers(self):
@@ -79,9 +78,6 @@ class Player(Hand):
         self._fichas = fichas
 
     # Métodos do Player
-    def comprarCarta(self, deck):
-        self._hand.append(deck.pop())
-
     def testeFichas(self, valor):
         return self._fichas > valor
 
@@ -126,7 +122,7 @@ class Dealer(Hand):
             self.auto = True
 
     def comprarCarta(self):
-        self._hand.append(self.deck.pop())
+        self.deck.givecard(self)
 
     def iniciar(self, players):
         self.deck = Deck(blackjack=self.gametype)
