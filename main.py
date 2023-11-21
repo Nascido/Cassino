@@ -1,14 +1,17 @@
 
-from games import Player, Blackjack
+from games import Player
+from interface import Casino
 
 """
     Cassino Royal
 """
+players = []
 
-player1 = Player("Rafael", 1000, 1234)
-player2 = Player("Éric", 1000, 1234)
-player3 = Player("Carioca", 1000, 1234)
+with open('players.txt', 'r') as file:
+    for line in file:
+        nome, cpf, senha, fichas = line.strip().split(' - ')
+        usr = Player(nome, int(cpf), senha, int(fichas))
+        players.append(usr)
 
-players = [player1, player2, player3]
-
-game = Blackjack(players)
+cassino = Casino(players)
+cassino.show()
