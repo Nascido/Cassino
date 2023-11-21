@@ -53,7 +53,7 @@ class Deck:
             self.shuffle()
             for i in range(handsize):
                 for player in players:
-                    player.comprarCarta(self)
+                    self.givecard(player)
         else:
             raise ValueError("Número de cartas do deck insuficiente!")
 
