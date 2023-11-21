@@ -164,10 +164,44 @@ class Blackjack(Game):
         else:
             raise ValueError("Valor 21 já alcançado ou estourado")
 
-    def dealerHit(self):
+    def dealerhit(self):
         if self._dealer.sum21() < 17:
             self._dealer.comprarCarta()
             return True
 
         else:
             return False
+
+    def finalizar(self):
+        soma = 0
+        somaDealer = self._dealer.sum21()
+        i = 0
+        score = []
+        win = []
+
+        if somaDealer <= 21:
+            for player in self._players:
+                tmp = player.sum21()
+                score.append(tmp)
+
+                if soma < tmp <= 21:
+                    soma = tmp
+
+            if soma >= somaDealer:
+                for tmp in score:
+                    if tmp == soma:
+                        win.append(self._players[i])
+
+                    i += 1
+
+        else:
+            win = self._players
+
+        return win
+
+    def status(self):
+        for player in self._players:
+            print(f"{player}: {player.sum21()}")
+
+        print(f"{self._dealer}: {self._dealer.sum21()}")
+
