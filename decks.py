@@ -1,11 +1,11 @@
-
+from PIL import Image
 from random import shuffle
 
 
 class Deck:
     def __init__(self, decks=1, blackjack=False):
         self.__nipes = ['ouros', 'copas', 'espadas', 'paus']
-        self.__num = ['2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K', 'A']
+        self.__num = ['A', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K']
         self.__numberOfDecks = decks
         self.index = 0
         self._deck = []
@@ -15,8 +15,18 @@ class Deck:
 
     def __gerarDeck(self, blackjack):
         for nipe in self.__nipes:
+            i = 0
             for num in self.__num:
-                self.append(Card(num, nipe, blackjack))
+                i += 1
+                # Adicionando imagem a carta
+                card = Card(num, nipe, blackjack)
+                image_path = f"cards/{i}-{nipe}.png"
+                image = Image.open(image_path)
+
+                card.img = image
+
+                # Adicionando ao baralho
+                self.append(card)
 
     def shuffle(self):
         shuffle(self._deck)
@@ -88,6 +98,7 @@ class Deck:
 class Card:
     def __init__(self, tipo, nipe, blackjack=False, valor=None, altvalor=None, setalt=False):
         # Como identificar a carta
+        self.img = None
         self._tipo = tipo
         self._nipe = nipe
 
