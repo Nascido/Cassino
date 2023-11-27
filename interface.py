@@ -1,26 +1,56 @@
 
 import tkinter as tk
+from tkinter import messagebox as mg
 
 
-class Casino:
-    def __init__(self, players):
-        self.players = players
-        self.caixa = 5000
+class Interface:
+    def __init__(self, usuarios):
+        self.users = usuarios
+        self._usr = None
 
-    def show(self):
-        firstwindow = tk.Tk()
-        firstwindow.title("Cassino Royal")
-        firstwindow.geometry("300x100")
+    def register(self):
+        def saveInfo():
+            pass
 
-        bemvindo = tk.Label(text="Bem vindo(a), selecione a opção desejada:")
-        login = tk.Button(text="Entrar", command=self.login)
-        cadastro = tk.Button(text="Cadastro", command=self.cadastro)
+        # Login window
+        register = tk.Tk()
+        register.title("Registro de Usuário")
+        register.geometry("350x250")
 
-        bemvindo.pack()
-        login.pack()
-        cadastro.pack()
+        # Frames
+        usr = tk.Frame(register)
+        senha = tk.Frame(register)
 
-        firstwindow.mainloop()
+        # Widgets
+        registro_label = tk.Label(register, text="Registro")
+        cpf_label = tk.Label(usr, text='CPF')
+        cpf_entry = tk.Entry(usr)
+        username_label = tk.Label(usr, text="Nome")
+        username_entry = tk.Entry(usr)
+        password_label = tk.Label(senha, text="Senha")
+        password_entry = tk.Entry(senha, show='*')
+        repeat_label = tk.Label(senha, text="Senha")
+        repeat_entry = tk.Entry(senha, show='*')
+        login_button = tk.Button(register, text='Entrar', command=saveInfo)
+
+        # Placing widgets
+        registro_label.pack()
+
+        usr.pack()
+        cpf_label.grid(row=0, column=0)
+        cpf_entry.grid(row=0, column=1)
+        username_label.grid(row=1, column=0)
+        username_entry.grid(row=1, column=1)
+
+        senha.pack()
+        password_label.grid(row=0, column=0)
+        password_entry.grid(row=0, column=1)
+        repeat_label.grid(row=1, column=0)
+        repeat_entry.grid(row=1, column=1)
+
+        login_button.pack()
+
+        register.mainloop()
 
     def login(self):
         def checklogin():
@@ -28,32 +58,39 @@ class Casino:
             password = password_entry.get()
             encontrado = False
 
-            for player in self.players:
-                name = player.getname()
+            for usr in self.users:
+                name = usr.getname()
                 if usrname == name:
-                    senha = player.getsenha()
+                    senha = usr.getsenha()
                     encontrado = True
                     if senha == password:
                         print("Usuário Autenticado")
+                        self._usr = usr
+                        self.acess()
 
                     else:
                         print("Senha incorreta")
+                        mg.showinfo("Falha no Login", "Senha Incorreta!", icon='error')
 
             if not encontrado:
                 print("Usuário Inexistente")
+                mg.showinfo("Falha no Login", "Usuário não encontrado!", icon='error')
 
         # Login window
         login = tk.Tk()
         login.title("Login de Usuário")
-        login.geometry("350x400")
+        login.geometry("350x200")
+
+        frame_login = tk.Frame(login)
+        frame_login.pack()
 
         # widgets
-        login_label = tk.Label(login, text="Autenticação")
-        username_label = tk.Label(login, text="Nome")
-        username_entry = tk.Entry(login)
-        password_label = tk.Label(login, text="Senha")
-        password_entry = tk.Entry(login, show='*')
-        login_button = tk.Button(login, text='Entrar', command=checklogin)
+        login_label = tk.Label(frame_login, text="Login")
+        username_label = tk.Label(frame_login, text="Usuário")
+        username_entry = tk.Entry(frame_login)
+        password_label = tk.Label(frame_login, text="Senha")
+        password_entry = tk.Entry(frame_login, show='*')
+        login_button = tk.Button(frame_login, text='Entrar', command=checklogin)
 
         # Placing widgets
         login_label.grid(row=0, column=0, columnspan=2)
@@ -65,37 +102,33 @@ class Casino:
 
         login.mainloop()
 
-    def cadastro(self):
-        def registrar():
-            pass
+    def acess(self):
+        nome = self._usr.getname()
+        intro_usario = f"Bem vindo {nome}"
 
-        # Login window
-        cadastro = tk.Tk()
-        cadastro.title("Registro de Usuário")
-        cadastro.geometry("350x400")
+        sistem = tk.Tk()
+        welcome = tk.Label(sistem, text=intro_usario)
+        welcome.pack()
 
-        # widgets
-        registro_label = tk.Label(cadastro, text="Registro")
-        cpf_label = tk.Label(cadastro, text='CPF')
-        cpf_entry = tk.Entry(cadastro)
-        username_label = tk.Label(cadastro, text="Nome")
-        username_entry = tk.Entry(cadastro)
-        password_label = tk.Label(cadastro, text="Senha")
-        password_entry = tk.Entry(cadastro, show='*')
-        repeat_label = tk.Label(cadastro, text="Senha")
-        repeat_entry = tk.Entry(cadastro, show='*')
-        login_button = tk.Button(cadastro, text='Entrar', command=registrar)
+        sistem.mainloop()
 
-        # Placing widgets
-        registro_label.grid(row=0, column=0, columnspan=2)
-        cpf_label.grid(row=1, column=0)
-        cpf_entry.grid(row=1, column=1)
-        username_label.grid(row=2, column=0)
-        username_entry.grid(row=2, column=1)
-        password_label.grid(row=3, column=0)
-        password_entry.grid(row=3, column=1)
-        repeat_label.grid(row=4, column=0)
-        repeat_entry.grid(row=4, column=1)
-        login_button.grid(row=5, column=0, columnspan=2)
 
-        cadastro.mainloop()
+class Casino(Interface):
+    def __init__(self, players):
+        super().__init__(players)
+        self.caixa = 5000
+
+    def show(self):
+        firstwindow = tk.Tk()
+        firstwindow.title("Cassino Royal")
+        firstwindow.geometry("300x100")
+
+        bemvindo = tk.Label(text="Bem vindo(a), selecione a opção desejada:")
+        login = tk.Button(text="Entrar", command=self.login)
+        cadastro = tk.Button(text="Cadastro", command=self.register)
+
+        bemvindo.pack()
+        login.pack()
+        cadastro.pack()
+
+        firstwindow.mainloop()
