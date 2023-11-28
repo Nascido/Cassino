@@ -1,6 +1,7 @@
 
 import tkinter as tk
 from tkinter import messagebox as mg
+from games import Player
 
 
 class Interface:
@@ -10,7 +11,24 @@ class Interface:
 
     def register(self):
         def saveInfo():
-            pass
+            username = username_entry.get()
+            password = password_entry.get()
+            fichas = 200
+            registrado = False
+
+            for user in self.users:
+                name = user.getname()
+                if username == name:
+                    registrado = True
+                    mg.showinfo("Usuário já cadastrado!", "Nome de Usuário já cadastrado")
+                    break
+
+            if not registrado:
+                with open('players.txt', 'a') as file:
+                    registro = f"\n{username} - {password} - {fichas}"
+                    file.write(registro)
+
+                self.users.append(Player(username, password, fichas))
 
         # Login window
         register = tk.Tk()
@@ -23,30 +41,22 @@ class Interface:
 
         # Widgets
         registro_label = tk.Label(register, text="Registro")
-        cpf_label = tk.Label(usr, text='CPF')
-        cpf_entry = tk.Entry(usr)
         username_label = tk.Label(usr, text="Nome")
         username_entry = tk.Entry(usr)
         password_label = tk.Label(senha, text="Senha")
         password_entry = tk.Entry(senha, show='*')
-        repeat_label = tk.Label(senha, text="Senha")
-        repeat_entry = tk.Entry(senha, show='*')
         login_button = tk.Button(register, text='Entrar', command=saveInfo)
 
         # Placing widgets
         registro_label.pack()
 
         usr.pack()
-        cpf_label.grid(row=0, column=0)
-        cpf_entry.grid(row=0, column=1)
-        username_label.grid(row=1, column=0)
-        username_entry.grid(row=1, column=1)
+        username_label.grid(row=0, column=0)
+        username_entry.grid(row=0, column=1)
 
         senha.pack()
         password_label.grid(row=0, column=0)
         password_entry.grid(row=0, column=1)
-        repeat_label.grid(row=1, column=0)
-        repeat_entry.grid(row=1, column=1)
 
         login_button.pack()
 
