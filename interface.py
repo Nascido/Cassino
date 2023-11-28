@@ -1,7 +1,7 @@
 
 import tkinter as tk
 from tkinter import messagebox as mg
-from games import Player
+from games import Player, Blackjack
 
 
 class Interface:
@@ -129,6 +129,9 @@ class Casino(Interface):
         super().__init__(players)
         self.caixa = 5000
 
+    def acess(self):
+        self.blackjack()
+
     def show(self):
         firstwindow = tk.Tk()
         firstwindow.title("Cassino Royal")
@@ -143,3 +146,7 @@ class Casino(Interface):
         cadastro.pack()
 
         firstwindow.mainloop()
+
+    def blackjack(self):
+        game = Blackjack(self.users)
+        game.iniciar()
