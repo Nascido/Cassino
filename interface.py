@@ -29,6 +29,7 @@ class Interface:
                     file.write(registro)
 
                 self.users.append(Player(username, password, fichas))
+                mg.showinfo("Cadastro", "Usuário cadastrado com Sucesso")
 
         # Login window
         register = tk.Tk()
