@@ -200,3 +200,6 @@ class Blackjack(Game):
             print(f"{player}: {player.sum21()}")
 
         print(f"{self._dealer}: {self._dealer.sum21()}")
+
+    def getdealer(self):
+        return self._dealer
