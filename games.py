@@ -70,10 +70,9 @@ class Hand:
 
 
 class Player(Hand):
-    def __init__(self, nome, cpf, senha, fichas=100):
+    def __init__(self, nome, senha, fichas=100):
         super().__init__()
         self._name = nome
-        self._cpf = cpf
         self._senha = senha
         self._fichas = fichas
 
@@ -95,9 +94,6 @@ class Player(Hand):
     def getname(self):
         return self._name
 
-    def getcpf(self):
-        return self._cpf
-
     def getsenha(self):
         return self._senha
 
@@ -105,7 +101,7 @@ class Player(Hand):
         return self._fichas
 
     def getplayerinfo(self):
-        return self._name, self._cpf, self._senha, self._fichas
+        return self._name, self._senha, self._fichas
 
     def __str__(self):
         return f"{self._name}: {self._hand}"
@@ -204,4 +200,3 @@ class Blackjack(Game):
             print(f"{player}: {player.sum21()}")
 
         print(f"{self._dealer}: {self._dealer.sum21()}")
-
