@@ -104,7 +104,7 @@ class Player(Hand):
         return self._name, self._senha, self._fichas
 
     def __str__(self):
-        return f"{self._name}: {self._hand}"
+        return f"{self._name}"
 
 
 class Dealer(Hand):
@@ -140,7 +140,7 @@ class Dealer(Hand):
             raise TypeError("Deck do dealer não inicializado!")
 
     def __str__(self):
-        return f"Dealer: {self._hand}"
+        return f"Dealer"
 
 
 class Blackjack(Game):
