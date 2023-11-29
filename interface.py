@@ -156,39 +156,43 @@ class Casino(Interface):
 
         player = players[0]
 
-        def addcard():
-            pass
-
         game_window = tk.Tk()
         game_window.title("Blackjack Game")
 
         # Frames
-        player_frame = tk.Frame(game_window)
         dealer_frame = tk.Frame(game_window)
+        player_frame = tk.Frame(game_window)
         button_frame = tk.Frame(game_window)
 
-        print(player[0].img)
+        # Cards Display
+        verso_dealer = True
+        card0_dealer = TkImg.PhotoImage(dealer[0].display(verso_dealer))
 
-        # Widgets
-        intro_label = tk.Label(game_window)
-        card1_pl = TkImg.PhotoImage(player[0].img)
-        card2_pl = TkImg.PhotoImage(player[1].img)
-        card1_de = TkImg.PhotoImage(dealer[0].img)
+        card0_player = TkImg.PhotoImage(player[0].display())
+        card1_player = TkImg.PhotoImage(player[0].display())
 
-        card1_pl_label = tk.Label(player_frame, image=card1_pl)
-        card2_pl_label = tk.Label(player_frame, image=card2_pl)
-        card1_de_label = tk.Label(dealer_frame, image=card1_de)
+        # Labels Texts
+        intro_label = tk.Label(text="Blackjack")
+        hands_label = tk.Label(text="Hands")
+        sum_text_label = tk.Label(text="Sum")
+        dealer_label = tk.Label(text=dealer)
+        player1_label = tk.Label(text=player)
 
-        # Placing Game Window
-        intro_label.pack()
-        dealer_frame.pack()
-        player_frame.pack()
+        # Cards Label
+        card0_dealer_label = tk.Label(image=card0_dealer)
+        card0_player_label = tk.Label(image=card0_player)
+        card1_player_label = tk.Label(image=card1_player)
 
-        # Placing Player Frame
-        card1_pl_label.grid(row=0, column=0)
-        card2_pl_label.grid(row=0, column=1)
+        # Sum Label
+        if verso_dealer:
+            sum_dealer = '?'
 
-        # Placing Dealer Frame
-        card1_de_label.pack()
+        else:
+            sum_dealer = f'{dealer.sum21()}'
+
+        sum_dealer_label = tk.Label(text=sum_dealer)
+
+        sum_player = f'{player.sum21()}'
+        sum_player_label = tk.Label(text=sum_player)
 
         game_window.mainloop()
