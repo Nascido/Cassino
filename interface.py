@@ -1,6 +1,7 @@
 
 import tkinter as tk
 from tkinter import messagebox as mg
+from PIL import ImageTk as TkImg
 from games import Player, Blackjack
 
 
@@ -149,4 +150,45 @@ class Casino(Interface):
 
     def blackjack(self):
         game = Blackjack(self.users)
+        dealer = game.getdealer()
+        players = game.getplayers()
         game.iniciar()
+
+        player = players[0]
+
+        def addcard():
+            pass
+
+        game_window = tk.Tk()
+        game_window.title("Blackjack Game")
+
+        # Frames
+        player_frame = tk.Frame(game_window)
+        dealer_frame = tk.Frame(game_window)
+        button_frame = tk.Frame(game_window)
+
+        print(player[0].img)
+
+        # Widgets
+        intro_label = tk.Label(game_window)
+        card1_pl = TkImg.PhotoImage(player[0].img)
+        card2_pl = TkImg.PhotoImage(player[1].img)
+        card1_de = TkImg.PhotoImage(dealer[0].img)
+
+        card1_pl_label = tk.Label(player_frame, image=card1_pl)
+        card2_pl_label = tk.Label(player_frame, image=card2_pl)
+        card1_de_label = tk.Label(dealer_frame, image=card1_de)
+
+        # Placing Game Window
+        intro_label.pack()
+        dealer_frame.pack()
+        player_frame.pack()
+
+        # Placing Player Frame
+        card1_pl_label.grid(row=0, column=0)
+        card2_pl_label.grid(row=0, column=1)
+
+        # Placing Dealer Frame
+        card1_de_label.pack()
+
+        game_window.mainloop()
