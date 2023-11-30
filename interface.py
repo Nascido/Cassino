@@ -1,7 +1,8 @@
 
-import tkinter as tk
+import customtkinter as tk
+from customtkinter import CTkImage as TkImg
 from tkinter import messagebox as mg
-from PIL import ImageTk as TkImg
+
 from games import Player, Blackjack
 
 
@@ -33,21 +34,21 @@ class Interface:
                 mg.showinfo("Cadastro", "Usuário cadastrado com Sucesso")
 
         # Login window
-        register = tk.Tk()
+        register = tk.CTk()
         register.title("Registro de Usuário")
         register.geometry("350x250")
 
         # Frames
-        usr = tk.Frame(register)
-        senha = tk.Frame(register)
+        usr = tk.CTkFrame(register)
+        senha = tk.CTkFrame(register)
 
         # Widgets
-        registro_label = tk.Label(register, text="Registro")
-        username_label = tk.Label(usr, text="Nome")
-        username_entry = tk.Entry(usr)
-        password_label = tk.Label(senha, text="Senha")
-        password_entry = tk.Entry(senha, show='*')
-        login_button = tk.Button(register, text='Entrar', command=saveInfo)
+        registro_label = tk.CTkLabel(register, text="Registro")
+        username_label = tk.CTkLabel(usr, text="Nome")
+        username_entry = tk.CTkEntry(usr)
+        password_label = tk.CTkLabel(senha, text="Senha")
+        password_entry = tk.CTkEntry(senha, show='*')
+        login_button = tk.CTkButton(register, text='Entrar', command=saveInfo)
 
         # Placing widgets
         registro_label.pack()
@@ -89,20 +90,20 @@ class Interface:
                 mg.showinfo("Falha no Login", "Usuário não encontrado!", icon='error')
 
         # Login window
-        login = tk.Tk()
+        login = tk.CTk()
         login.title("Login de Usuário")
         login.geometry("350x200")
 
-        frame_login = tk.Frame(login)
+        frame_login = tk.CTkFrame(login)
         frame_login.pack()
 
         # widgets
-        login_label = tk.Label(frame_login, text="Login")
-        username_label = tk.Label(frame_login, text="Usuário")
-        username_entry = tk.Entry(frame_login)
-        password_label = tk.Label(frame_login, text="Senha")
-        password_entry = tk.Entry(frame_login, show='*')
-        login_button = tk.Button(frame_login, text='Entrar', command=checklogin)
+        login_label = tk.CTkLabel(frame_login, text="Login")
+        username_label = tk.CTkLabel(frame_login, text="Usuário")
+        username_entry = tk.CTkEntry(frame_login)
+        password_label = tk.CTkLabel(frame_login, text="Senha")
+        password_entry = tk.CTkEntry(frame_login, show='*')
+        login_button = tk.CTkButton(frame_login, text='Entrar', command=checklogin)
 
         # Placing widgets
         login_label.grid(row=0, column=0, columnspan=2)
@@ -118,8 +119,8 @@ class Interface:
         nome = self._usr.getname()
         intro_usario = f"Bem vindo {nome}"
 
-        sistem = tk.Tk()
-        welcome = tk.Label(sistem, text=intro_usario)
+        sistem = tk.CTk()
+        welcome = tk.CTkLabel(sistem, text=intro_usario)
         welcome.pack()
 
         sistem.mainloop()
@@ -134,13 +135,13 @@ class Casino(Interface):
         self.blackjack()
 
     def show(self):
-        firstwindow = tk.Tk()
+        firstwindow = tk.CTk()
         firstwindow.title("Cassino Royal")
         firstwindow.geometry("300x100")
 
-        bemvindo = tk.Label(text="Bem vindo(a), selecione a opção desejada:")
-        login = tk.Button(text="Entrar", command=self.login)
-        cadastro = tk.Button(text="Cadastro", command=self.register)
+        bemvindo = tk.CTkLabel(firstwindow, text="Bem vindo(a), selecione a opção desejada:")
+        login = tk.CTkButton(firstwindow, text="Entrar", command=self.login)
+        cadastro = tk.CTkButton(firstwindow, text="Cadastro", command=self.register)
 
         bemvindo.pack()
         login.pack()
@@ -156,34 +157,34 @@ class Casino(Interface):
 
         player = players[0]
 
-        game_window = tk.Tk()
+        game_window = tk.CTk()
         game_window.title("Blackjack Game")
 
         # Frames
-        dealer_frame = tk.Frame(game_window)
-        player_frame = tk.Frame(game_window)
-        button_frame = tk.Frame(game_window)
+        dealer_frame = tk.CTkFrame(game_window)
+        player_frame = tk.CTkFrame(game_window)
+        button_frame = tk.CTkFrame(game_window)
 
         # Cards Display
         verso_dealer = True
-        card0_dealer = TkImg.PhotoImage(dealer[0].display(verso_dealer))
-        card1_dealer = TkImg.PhotoImage(dealer[1].display())
+        card0_dealer = TkImg(dealer[0].display(verso_dealer))
+        card1_dealer = TkImg(dealer[1].display())
 
-        card0_player = TkImg.PhotoImage(player[0].display())
-        card1_player = TkImg.PhotoImage(player[1].display())
+        card0_player = TkImg(player[0].display())
+        card1_player = TkImg(player[1].display())
 
         # Labels Texts
-        intro_label = tk.Label(game_window, text="Blackjack")
-        hands_label = tk.Label(game_window, text="Hands")
-        sum_text_label = tk.Label(game_window, text="Sum")
-        dealer_label = tk.Label(dealer_frame, text=dealer)
-        player1_label = tk.Label(player_frame, text=player)
+        intro_label = tk.CTkLabel(game_window, text="Blackjack")
+        hands_label = tk.CTkLabel(game_window, text="Hands")
+        sum_text_label = tk.CTkLabel(game_window, text="Sum")
+        dealer_label = tk.CTkLabel(dealer_frame, text=dealer)
+        player1_label = tk.CTkLabel(player_frame, text=player)
 
         # Cards Label
-        card0_dealer_label = tk.Label(dealer_frame, image=card0_dealer)
-        card1_dealer_label = tk.Label(dealer_frame, image=card1_dealer)
-        card0_player_label = tk.Label(player_frame, image=card0_player)
-        card1_player_label = tk.Label(player_frame, image=card1_player)
+        card0_dealer_label = tk.CTkLabel(dealer_frame, image=card0_dealer)
+        card1_dealer_label = tk.CTkLabel(dealer_frame, image=card1_dealer)
+        card0_player_label = tk.CTkLabel(player_frame, image=card0_player)
+        card1_player_label = tk.CTkLabel(player_frame, image=card1_player)
 
         # Sum Label
         if verso_dealer:
@@ -192,10 +193,10 @@ class Casino(Interface):
         else:
             sum_dealer = f'{dealer.sum21()}'
 
-        sum_dealer_label = tk.Label(game_window, text=sum_dealer)
+        sum_dealer_label = tk.CTkLabel(game_window, text=sum_dealer)
 
         sum_player = f'{player.sum21()}'
-        sum_player_label = tk.Label(game_window, text=sum_player)
+        sum_player_label = tk.CTkLabel(game_window, text=sum_player)
 
         # Placing Widgets Game Window
         intro_label.grid(row=0, column=1, columnspan=2)
