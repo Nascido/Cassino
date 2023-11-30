@@ -166,8 +166,8 @@ class Card:
 
         return self._valor
 
-    def display(self, verso=False):
-        if verso:
+    def display(self, hide=False):
+        if hide:
             return self.verso
         else:
             return self.img
