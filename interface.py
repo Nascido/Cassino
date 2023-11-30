@@ -167,9 +167,10 @@ class Casino(Interface):
         # Cards Display
         verso_dealer = True
         card0_dealer = TkImg.PhotoImage(dealer[0].display(verso_dealer))
+        card1_dealer = TkImg.PhotoImage(dealer[1].display())
 
         card0_player = TkImg.PhotoImage(player[0].display())
-        card1_player = TkImg.PhotoImage(player[0].display())
+        card1_player = TkImg.PhotoImage(player[1].display())
 
         # Labels Texts
         intro_label = tk.Label(game_window, text="Blackjack")
@@ -180,6 +181,7 @@ class Casino(Interface):
 
         # Cards Label
         card0_dealer_label = tk.Label(dealer_frame, image=card0_dealer)
+        card1_dealer_label = tk.Label(dealer_frame, image=card1_dealer)
         card0_player_label = tk.Label(player_frame, image=card0_player)
         card1_player_label = tk.Label(player_frame, image=card1_player)
 
@@ -208,6 +210,7 @@ class Casino(Interface):
         # Placing Widgets Dealer Frame
         dealer_label.grid(row=0, column=0)
         card0_dealer_label.grid(row=1, column=0)
+        card1_dealer_label.grid(row=1, column=1)
 
         # Placing Widgets Player Frame
         player1_label.grid(row=0, column=0)
