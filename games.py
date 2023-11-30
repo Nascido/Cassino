@@ -104,7 +104,7 @@ class Player(Hand):
         return self._name, self._senha, self._fichas
 
     def __str__(self):
-        return f"{self._name}: {self._hand}"
+        return f"{self._name}"
 
 
 class Dealer(Hand):
@@ -135,12 +135,12 @@ class Dealer(Hand):
             self.deck.distribuir(players, handsize)
 
             if self.auto:
-                self._hand.append(self.deck.pop())
+                self.deck.distribuir([self], handsize)
         else:
             raise TypeError("Deck do dealer não inicializado!")
 
     def __str__(self):
-        return f"Dealer: {self._hand}"
+        return f"Dealer"
 
 
 class Blackjack(Game):
@@ -200,3 +200,6 @@ class Blackjack(Game):
             print(f"{player}: {player.sum21()}")
 
         print(f"{self._dealer}: {self._dealer.sum21()}")
+
+    def getdealer(self):
+        return self._dealer

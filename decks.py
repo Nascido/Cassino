@@ -99,6 +99,7 @@ class Card:
     def __init__(self, tipo, nipe, blackjack=False, valor=None, altvalor=None, setalt=False):
         # Como identificar a carta
         self.img = None
+        self.verso = Image.open("cards/verso.png")
         self._tipo = tipo
         self._nipe = nipe
 
@@ -165,6 +166,12 @@ class Card:
 
         return self._valor
 
+    def display(self, hide=False):
+        if hide:
+            return self.verso
+        else:
+            return self.img
+
     # Getters
     def gettipo(self):
         return self._tipo
@@ -175,7 +182,7 @@ class Card:
     def getvalorOriginal(self):
         return self._valorOriginal
 
-    def getaltvalor(self):
+    def getvalorAlternado(self):
         return self._valorAlternado
 
     # Builtins
