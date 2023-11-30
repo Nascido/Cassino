@@ -135,7 +135,7 @@ class Dealer(Hand):
             self.deck.distribuir(players, handsize)
 
             if self.auto:
-                self._hand.append(self.deck.pop())
+                self.deck.distribuir([self], handsize)
         else:
             raise TypeError("Deck do dealer não inicializado!")
 
