@@ -158,11 +158,12 @@ class Casino(Interface):
 
         game_window = tk.Tk()
         game_window.title("Blackjack Game")
+        game_window.geometry("800x500")
 
         # Frames
-        dealer_frame = tk.Frame(game_window)
-        player_frame = tk.Frame(game_window)
-        button_frame = tk.Frame(game_window)
+        dealer_frame = tk.Frame(game_window, bg='#bdbdbd')
+        player_frame = tk.Frame(game_window, bg='#bdbdbd')
+        button_frame = tk.Frame(game_window, bg='#bdbdbd')
 
         # Cards Display
         verso_dealer = True
@@ -173,9 +174,9 @@ class Casino(Interface):
         card1_player = TkImg.PhotoImage(player[1].display())
 
         # Labels Texts
-        intro_label = tk.Label(game_window, text="Blackjack")
-        hands_label = tk.Label(game_window, text="Hands")
-        sum_text_label = tk.Label(game_window, text="Sum")
+        intro_label = tk.Label(game_window, text="Blackjack", bg='#bfac88')
+        hands_label = tk.Label(game_window, text="Hands", bg='#bfac88')
+        sum_text_label = tk.Label(game_window, text="Sum", bg='#bfac88')
         dealer_label = tk.Label(dealer_frame, text=dealer)
         player1_label = tk.Label(player_frame, text=player)
 
@@ -198,23 +199,43 @@ class Casino(Interface):
         sum_player_label = tk.Label(game_window, text=sum_player)
 
         # Placing Widgets Game Window
-        intro_label.grid(row=0, column=1, columnspan=2)
+        intro_label.place(relx=0.02, rely=0.02, relwidth=0.96, relheight=0.09)
+        hands_label.place(relx=0.02, rely=0.13, relwidth=0.74, relheight=0.09)
+        sum_text_label.place(relx=0.98, rely=0.13, relwidth=0.20, relheight=0.09, anchor='ne')
+        dealer_frame.place(relx=0.02, rely=0.24, relwidth=0.74, relheight=0.3)
+        player_frame.place(relx=0.02, rely=0.56, relwidth=0.74, relheight=0.3)
+        sum_dealer_label.place(relx=0.98, rely=0.24, relwidth=0.20, relheight=0.3, anchor='ne')
+        sum_player_label.place(relx=0.98, rely=0.56, relwidth=0.20, relheight=0.3, anchor='ne')
+        button_frame.place(relx=0.02, rely=0.97, relwidth=0.74, relheight=0.09, anchor='sw')
+
+
+
+
+
+        """
+        # Grid Widgets Game Window
+        intro_label.grid(row=0, column=0, columnspan=2)
         hands_label.grid(row=1, column=0)
         sum_text_label.grid(row=1, column=1)
         dealer_frame.grid(row=2, column=0)
         sum_dealer_label.grid(row=2, column=1)
         player_frame.grid(row=3, column=0)
         sum_player_label.grid(row=3, column=1)
-        button_frame.grid(row=4, column=1, columnspan=2)
+        button_frame.grid(row=4, column=0, columnspan=2)
+        """
 
+        """  
         # Placing Widgets Dealer Frame
         dealer_label.grid(row=0, column=0)
         card0_dealer_label.grid(row=1, column=0)
         card1_dealer_label.grid(row=1, column=1)
+        """
 
+        """
         # Placing Widgets Player Frame
         player1_label.grid(row=0, column=0)
         card0_player_label.grid(row=1, column=0)
         card1_player_label.grid(row=1, column=1)
+        """
 
         game_window.mainloop()
