@@ -199,14 +199,14 @@ class Casino(Interface):
         sum_player_label = tk.CTkLabel(game_window, text=sum_player)
 
         # Placing Widgets Game Window
-        intro_label.grid(row=0, column=1, columnspan=2)
-        hands_label.grid(row=1, column=0)
+        intro_label.grid(row=0, column=0, columnspan=2)
+        hands_label.grid(row=1, column=0, padx=20, pady=20)
         sum_text_label.grid(row=1, column=1)
         dealer_frame.grid(row=2, column=0)
         sum_dealer_label.grid(row=2, column=1)
         player_frame.grid(row=3, column=0)
         sum_player_label.grid(row=3, column=1)
-        button_frame.grid(row=4, column=1, columnspan=2)
+        button_frame.grid(row=4, column=0, columnspan=2)
 
         # Placing Widgets Dealer Frame
         dealer_label.grid(row=0, column=0)
