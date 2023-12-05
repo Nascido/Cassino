@@ -166,10 +166,12 @@ class Casino(Interface):
         button_frame = tk.Frame(game_window, bg='#bdbdbd')
 
         # Cards Display
+        # Dealer
         verso_dealer = True
-        card0_dealer = TkImg.PhotoImage(dealer[0].display(verso_dealer))
-        card1_dealer = TkImg.PhotoImage(dealer[1].display())
+        card0_dealer = TkImg.PhotoImage(dealer[1].display(verso_dealer))
+        card1_dealer = TkImg.PhotoImage(dealer[0].display())
 
+        # Player
         card0_player = TkImg.PhotoImage(player[0].display())
         card1_player = TkImg.PhotoImage(player[1].display())
 
@@ -178,11 +180,14 @@ class Casino(Interface):
         hands_label = tk.Label(game_window, text="Hands", bg='#bfac88')
         sum_text_label = tk.Label(game_window, text="Sum", bg='#bfac88')
         dealer_label = tk.Label(dealer_frame, text=dealer)
-        player1_label = tk.Label(player_frame, text=player)
+        player1_label = tk.Label(player_frame, text=player, padx=20)
 
         # Cards Label
-        card0_dealer_label = tk.Label(dealer_frame, image=card0_dealer)
-        card1_dealer_label = tk.Label(dealer_frame, image=card1_dealer)
+        # Dealer
+        card0_dealer_label = tk.Label(dealer_frame, image=card1_dealer)
+        card1_dealer_label = tk.Label(dealer_frame, image=card0_dealer)
+
+        # Player
         card0_player_label = tk.Label(player_frame, image=card0_player)
         card1_player_label = tk.Label(player_frame, image=card1_player)
 
@@ -208,9 +213,15 @@ class Casino(Interface):
         sum_player_label.place(relx=0.98, rely=0.56, relwidth=0.20, relheight=0.3, anchor='ne')
         button_frame.place(relx=0.02, rely=0.97, relwidth=0.74, relheight=0.09, anchor='sw')
 
+        # Placing Widgets on dealer Frame
+        dealer_label.grid(row=0, column=0, columnspan=2)
+        card0_dealer_label.grid(row=1, column=0)
+        card1_dealer_label.grid(row=1, column=1)
 
-
-
+        # Placing Widgets on Player Frame
+        player1_label.grid(row=0, column=0, columnspan=2)
+        card0_player_label.grid(row=1, column=0)
+        card1_player_label.grid(row=1, column=1)
 
         """
         # Grid Widgets Game Window
