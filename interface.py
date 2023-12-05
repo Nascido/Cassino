@@ -159,10 +159,20 @@ class Casino(Interface):
         game_window.title("Blackjack Game")
         game_window.geometry("800x500")
 
+        hitted = 0
+        sum_player = f'{player.sum21()}'
+
         # Commands
         def hit():
-            game.hit(player)
-            
+            add = game.hit(player)
+            if add:
+                i = hitted+2
+                cards_player[i] = TkImg.PhotoImage(player[i].display)
+                sum_player = f"{player.sum21()}"
+
+
+
+
 
         def stay():
             pass
@@ -183,6 +193,7 @@ class Casino(Interface):
         card2_dealer = TkImg.PhotoImage(verso)
         card3_dealer = TkImg.PhotoImage(verso)
         card4_dealer = TkImg.PhotoImage(verso)
+        cards_dealer = [card0_dealer, card1_dealer, card2_dealer, card3_dealer, card4_dealer]
 
         # Player
         card0_player = TkImg.PhotoImage(player[0].display())
@@ -190,6 +201,8 @@ class Casino(Interface):
         card2_player = TkImg.PhotoImage(verso)
         card3_player = TkImg.PhotoImage(verso)
         card4_player = TkImg.PhotoImage(verso)
+        cards_player = [card0_player, card1_player, card2_player, card3_player, card4_player]
+
 
         # Labels Texts
         intro_label = tk.Label(game_window, text="Blackjack", bg='#bfac88')
@@ -221,8 +234,6 @@ class Casino(Interface):
             sum_dealer = f'{dealer.sum21()}'
 
         sum_dealer_label = tk.Label(game_window, text=sum_dealer)
-
-        sum_player = f'{player.sum21()}'
         sum_player_label = tk.Label(game_window, text=sum_player)
 
         # Buttons
