@@ -157,8 +157,10 @@ class Blackjack(Game):
     def hit(self, player):
         if player.sum21() < 21:
             self._dealer.deck.givecard(player)
+            return True
         else:
-            raise ValueError("Valor 21 já alcançado ou estourado")
+            print("Valor 21 já alcançado ou estourado")
+            return False
 
     def dealerhit(self):
         if self._dealer.sum21() < 17:
