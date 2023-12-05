@@ -150,7 +150,7 @@ class Casino(Interface):
         firstwindow.mainloop()
 
     def blackjack(self):
-        game = Blackjack(self.users)
+        game = Blackjack([self._usr])
         dealer = game.getdealer()
         player = self._usr
         game.iniciar()
@@ -161,7 +161,8 @@ class Casino(Interface):
 
         # Commands
         def hit():
-            pass
+            game.hit(player)
+            
 
         def stay():
             pass
@@ -179,10 +180,16 @@ class Casino(Interface):
         verso = Image.open("cards/verso.png")
         card0_dealer = TkImg.PhotoImage(dealer[1].display(verso_dealer))
         card1_dealer = TkImg.PhotoImage(dealer[0].display())
+        card2_dealer = TkImg.PhotoImage(verso)
+        card3_dealer = TkImg.PhotoImage(verso)
+        card4_dealer = TkImg.PhotoImage(verso)
 
         # Player
         card0_player = TkImg.PhotoImage(player[0].display())
         card1_player = TkImg.PhotoImage(player[1].display())
+        card2_player = TkImg.PhotoImage(verso)
+        card3_player = TkImg.PhotoImage(verso)
+        card4_player = TkImg.PhotoImage(verso)
 
         # Labels Texts
         intro_label = tk.Label(game_window, text="Blackjack", bg='#bfac88')
@@ -195,10 +202,16 @@ class Casino(Interface):
         # Dealer
         card0_dealer_label = tk.Label(dealer_card_frame, image=card1_dealer)
         card1_dealer_label = tk.Label(dealer_card_frame, image=card0_dealer)
+        card2_dealer_label = tk.Label(dealer_card_frame, image=card2_dealer)
+        card3_dealer_label = tk.Label(dealer_card_frame, image=card3_dealer)
+        card4_dealer_label = tk.Label(dealer_card_frame, image=card4_dealer)
 
         # Player
         card0_player_label = tk.Label(player_card_frame, image=card0_player)
         card1_player_label = tk.Label(player_card_frame, image=card1_player)
+        card2_player_label = tk.Label(player_card_frame, image=card2_player)
+        card3_player_label = tk.Label(player_card_frame, image=card3_player)
+        card4_player_label = tk.Label(player_card_frame, image=card4_player)
 
         # Sum Label
         if verso_dealer:
@@ -231,12 +244,18 @@ class Casino(Interface):
         dealer_card_frame.pack()
         card0_dealer_label.grid(row=0, column=0)
         card1_dealer_label.grid(row=0, column=1)
+        card2_dealer_label.grid(row=0, column=2)
+        card3_dealer_label.grid(row=0, column=3)
+        card4_dealer_label.grid(row=0, column=4)
 
         # Placing Widgets on Player Frame
         player1_label.pack()
         player_card_frame.pack()
         card0_player_label.grid(row=0, column=0)
         card1_player_label.grid(row=0, column=1)
+        card2_player_label.grid(row=0, column=2)
+        card3_player_label.grid(row=0, column=3)
+        card4_player_label.grid(row=0, column=4)
 
         # Placing Widgets on Button Frame
         hit_button.place(relx=0.60, rely=0.15)
