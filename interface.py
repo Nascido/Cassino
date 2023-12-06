@@ -2,7 +2,7 @@
 import tkinter as tk
 from tkinter import messagebox as mg
 from PIL import ImageTk as TkImg
-from PIL import Image
+# from PIL import Image
 from games import Player, Blackjack
 
 
@@ -150,6 +150,9 @@ class Casino(Interface):
         firstwindow.mainloop()
 
     def blackjack(self):
+        global times_hitted
+        times_hitted = 0
+
         game = Blackjack([self._usr])
         dealer = game.getdealer()
         player = self._usr
@@ -159,20 +162,54 @@ class Casino(Interface):
         game_window.title("Blackjack Game")
         game_window.geometry("800x500")
 
-        hitted = 0
         sum_player = f'{player.sum21()}'
 
         # Commands
+
         def hit():
-            add = game.hit(player)
-            if add:
-                i = hitted+2
-                cards_player[i] = TkImg.PhotoImage(player[i].display)
-                sum_player = f"{player.sum21()}"
+            global times_hitted
+            global sum_player_label
+            global sum_player
+            global card2_player
+            global card3_player
+            global card4_player
+            global card5_player
+            global hit_button
 
+            game.hit(player)
 
+            if times_hitted == 0:
+                card2_player = TkImg.PhotoImage(player[2].display())
+                card2_player_label = tk.Label(player_card_frame, image=card2_player)
+                card2_player_label.grid(row=0, column=2)
+                times_hitted += 1
 
+            elif times_hitted == 1:
+                card3_player = TkImg.PhotoImage(player[3].display())
+                card3_player_label = tk.Label(player_card_frame, image=card3_player)
+                card3_player_label.grid(row=0, column=3)
+                times_hitted += 1
 
+            elif times_hitted == 2:
+                card4_player = TkImg.PhotoImage(player[4].display())
+                card4_player_label = tk.Label(player_card_frame, image=card4_player)
+                card4_player_label.grid(row=0, column=4)
+                times_hitted += 1
+
+            elif times_hitted == 3:
+                card5_player = TkImg.PhotoImage(player[5].display())
+                card5_player_label = tk.Label(player_card_frame, image=card5_player)
+                card5_player_label.grid(row=0, column=5)
+                times_hitted += 1
+
+            sum_player = player.sum21()
+            sum_player_label = tk.Label(game_window, text=f'{sum_player}')
+            sum_player_label.place(relx=0.98, rely=0.56, relwidth=0.20, relheight=0.3, anchor='ne')
+
+            if sum_player >= 21:
+                hit_button = tk.Button(button_frame, text="HIT", state="disabled")
+                hit_button.place(relx=0.60, rely=0.15)
+                stay()
 
         def stay():
             pass
@@ -187,22 +224,20 @@ class Casino(Interface):
         # Cards Display
         # Dealer
         verso_dealer = True
-        verso = Image.open("cards/verso.png")
+        # verso = Image.open("cards/verso.png")
         card0_dealer = TkImg.PhotoImage(dealer[1].display(verso_dealer))
         card1_dealer = TkImg.PhotoImage(dealer[0].display())
+
+        """
         card2_dealer = TkImg.PhotoImage(verso)
         card3_dealer = TkImg.PhotoImage(verso)
         card4_dealer = TkImg.PhotoImage(verso)
         cards_dealer = [card0_dealer, card1_dealer, card2_dealer, card3_dealer, card4_dealer]
+        """
 
         # Player
         card0_player = TkImg.PhotoImage(player[0].display())
         card1_player = TkImg.PhotoImage(player[1].display())
-        card2_player = TkImg.PhotoImage(verso)
-        card3_player = TkImg.PhotoImage(verso)
-        card4_player = TkImg.PhotoImage(verso)
-        cards_player = [card0_player, card1_player, card2_player, card3_player, card4_player]
-
 
         # Labels Texts
         intro_label = tk.Label(game_window, text="Blackjack", bg='#bfac88')
@@ -215,16 +250,15 @@ class Casino(Interface):
         # Dealer
         card0_dealer_label = tk.Label(dealer_card_frame, image=card1_dealer)
         card1_dealer_label = tk.Label(dealer_card_frame, image=card0_dealer)
+        """
         card2_dealer_label = tk.Label(dealer_card_frame, image=card2_dealer)
         card3_dealer_label = tk.Label(dealer_card_frame, image=card3_dealer)
         card4_dealer_label = tk.Label(dealer_card_frame, image=card4_dealer)
+        """
 
         # Player
         card0_player_label = tk.Label(player_card_frame, image=card0_player)
         card1_player_label = tk.Label(player_card_frame, image=card1_player)
-        card2_player_label = tk.Label(player_card_frame, image=card2_player)
-        card3_player_label = tk.Label(player_card_frame, image=card3_player)
-        card4_player_label = tk.Label(player_card_frame, image=card4_player)
 
         # Sum Label
         if verso_dealer:
@@ -255,47 +289,20 @@ class Casino(Interface):
         dealer_card_frame.pack()
         card0_dealer_label.grid(row=0, column=0)
         card1_dealer_label.grid(row=0, column=1)
+        """
         card2_dealer_label.grid(row=0, column=2)
         card3_dealer_label.grid(row=0, column=3)
         card4_dealer_label.grid(row=0, column=4)
+        """
 
         # Placing Widgets on Player Frame
         player1_label.pack()
         player_card_frame.pack()
         card0_player_label.grid(row=0, column=0)
         card1_player_label.grid(row=0, column=1)
-        card2_player_label.grid(row=0, column=2)
-        card3_player_label.grid(row=0, column=3)
-        card4_player_label.grid(row=0, column=4)
 
         # Placing Widgets on Button Frame
         hit_button.place(relx=0.60, rely=0.15)
         stay_button.place(relx=0.30, rely=0.15)
-
-        """
-        # Grid Widgets Game Window
-        intro_label.grid(row=0, column=0, columnspan=2)
-        hands_label.grid(row=1, column=0)
-        sum_text_label.grid(row=1, column=1)
-        dealer_frame.grid(row=2, column=0)
-        sum_dealer_label.grid(row=2, column=1)
-        player_frame.grid(row=3, column=0)
-        sum_player_label.grid(row=3, column=1)
-        button_frame.grid(row=4, column=0, columnspan=2)
-        """
-
-        """  
-        # Placing Widgets Dealer Frame
-        dealer_label.grid(row=0, column=0)
-        card0_dealer_label.grid(row=1, column=0)
-        card1_dealer_label.grid(row=1, column=1)
-        """
-
-        """
-        # Placing Widgets Player Frame
-        player1_label.grid(row=0, column=0)
-        card0_player_label.grid(row=1, column=0)
-        card1_player_label.grid(row=1, column=1)
-        """
 
         game_window.mainloop()
