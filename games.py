@@ -80,10 +80,12 @@ class Player(Hand):
     def testeFichas(self, valor):
         return self._fichas > valor
 
-    def apostar(self, valor):
+    def ganhou(self, valor):
+        self._fichas += valor
+
+    def perdeu(self, valor):
         if self._fichas >= valor:
             self._fichas -= valor
-            return valor
         else:
             raise ValueError
 
@@ -147,7 +149,7 @@ class Blackjack(Game):
     def __init__(self, players, caixa=10000, apostaInicial=20) -> None:
         super().__init__(players)
         self._dealer = Dealer(blackjack=True)
-        self._apostaInicial = apostaInicial
+        self.apostaInicial = apostaInicial
         self._caixa = caixa
 
     def iniciar(self):
@@ -202,6 +204,14 @@ class Blackjack(Game):
             print(f"{player}: {player.sum21()}")
 
         print(f"{self._dealer}: {self._dealer.sum21()}")
+
+    def winner(self, player):
+        player.ganhou(self.apostaInicial)
+        self._caixa -= self.apostaInicial
+
+    def loser(self, player):
+        player.perdeu(self.apostaInicial)
+        self._caixa -= self.apostaInicial
 
     def getdealer(self):
         return self._dealer
