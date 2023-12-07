@@ -1,0 +1,22 @@
+[
+  {
+    "nome": "Rafael Nascimento",
+    "senha": "1234",
+    "fichas": 0
+  },
+  {
+    "nome": "Roberto",
+    "senha": "senha",
+    "fichas": 300
+  },
+  {
+    "nome": "Luiz",
+    "senha": "facil",
+    "fichas": 200
+  },
+  {
+    "nome": "Miranda",
+    "senha": "1369",
+    "fichas": 180
+  }
+]
