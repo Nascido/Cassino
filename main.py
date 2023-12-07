@@ -14,4 +14,4 @@ with open('players.txt', 'r') as file:
         users.append(usr)
 
 cassino = Casino(users)
-cassino.acess()
+cassino.login()
