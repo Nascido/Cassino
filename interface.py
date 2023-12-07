@@ -169,7 +169,6 @@ class Casino(Interface):
             game_window.destroy()
             self.blackjack()
 
-
         def hit():
             global times_hitted
             global sum_player_label
@@ -180,45 +179,47 @@ class Casino(Interface):
             global card5_player
             global hit_button
 
-            game.hit(player)
+            hited = game.hit(player)
 
-            if times_hitted == 0:
-                card2_player = TkImg.PhotoImage(player[2].display())
-                card2_player_label = tk.Label(player_card_frame, image=card2_player)
-                card2_player_label.grid(row=0, column=2)
-                times_hitted += 1
+            if hited:
+                if times_hitted == 0:
+                    card2_player = TkImg.PhotoImage(player[2].display())
+                    card2_player_label = tk.Label(player_card_frame, image=card2_player)
+                    card2_player_label.grid(row=0, column=2)
+                    times_hitted += 1
 
-            elif times_hitted == 1:
-                card3_player = TkImg.PhotoImage(player[3].display())
-                card3_player_label = tk.Label(player_card_frame, image=card3_player)
-                card3_player_label.grid(row=0, column=3)
-                times_hitted += 1
+                elif times_hitted == 1:
+                    card3_player = TkImg.PhotoImage(player[3].display())
+                    card3_player_label = tk.Label(player_card_frame, image=card3_player)
+                    card3_player_label.grid(row=0, column=3)
+                    times_hitted += 1
 
-            elif times_hitted == 2:
-                card4_player = TkImg.PhotoImage(player[4].display())
-                card4_player_label = tk.Label(player_card_frame, image=card4_player)
-                card4_player_label.grid(row=0, column=4)
-                times_hitted += 1
+                elif times_hitted == 2:
+                    card4_player = TkImg.PhotoImage(player[4].display())
+                    card4_player_label = tk.Label(player_card_frame, image=card4_player)
+                    card4_player_label.grid(row=0, column=4)
+                    times_hitted += 1
 
-            elif times_hitted == 3:
-                card5_player = TkImg.PhotoImage(player[5].display())
-                card5_player_label = tk.Label(player_card_frame, image=card5_player)
-                card5_player_label.grid(row=0, column=5)
-                times_hitted += 1
+                elif times_hitted == 3:
+                    card5_player = TkImg.PhotoImage(player[5].display())
+                    card5_player_label = tk.Label(player_card_frame, image=card5_player)
+                    card5_player_label.grid(row=0, column=5)
+                    times_hitted += 1
 
-            sum_player = player.sum21()
-            sum_player_label = tk.Label(game_window, text=f'{sum_player}')
-            sum_player_label.place(relx=0.98, rely=0.56, relwidth=0.20, relheight=0.3, anchor='ne')
+                sum_player = player.sum21()
+                sum_player_label = tk.Label(game_window, text=f'{sum_player}')
+                sum_player_label.place(relx=0.98, rely=0.56, relwidth=0.20, relheight=0.3, anchor='ne')
 
-            if sum_player >= 21:
-                hit_button = tk.Button(button_frame, text="HIT", state="disabled")
-                hit_button.place(relx=0.60, rely=0.15)
-                stay()
+                if sum_player >= 21:
+                    hit_button = tk.Button(button_frame, text="HIT", state="disabled")
+                    hit_button.place(relx=0.60, rely=0.15)
+                    stay()
 
         def stay():
             global hit_button
             global stay_button
             global sum_dealer
+            global sum_player
             global sum_dealer_label
             global card0_dealer
             global card0_dealer_label
@@ -274,6 +275,37 @@ class Casino(Interface):
             restart_button = tk.Button(game_window, text="RESTART", command=restart)
             restart_button.place(relx=0.93, rely=0.88, relwidth=0.10, relheight=0.08, anchor='ne')
 
+            sum_player = player.sum21()
+
+            if sum_dealer <= 21:
+                if sum_player <= 21:
+                    if sum_player > sum_dealer:
+                        info = "VOCÊ GANHOU!"
+
+                    elif sum_player < sum_dealer:
+                        info = "VOCÊ PERDEU!"
+
+                    else:
+                        info = "VOCÊ EMPATOU!"
+
+                else:
+                    info = "VOCÊ PERDEU!"
+            else:
+                if sum_player <= 21:
+                    info = "VOCÊ GANHOU!"
+
+                else:
+                    info = "VOCÊ EMPATOU!"
+
+            if info == "VOCÊ GANHOU!":
+                game.winner(player)
+
+            elif info == "VOCÊ PERDEU!":
+                game.loser(player)
+
+            player_money = player.getfichas()
+            mg.showinfo(title="Resultados", message=f"{info}\n\nSuas fichas: {player_money}           ")
+
         # Frames
         dealer_frame = tk.Frame(game_window, bg='#bdbdbd')
         dealer_card_frame = tk.Frame(dealer_frame)
@@ -294,8 +326,8 @@ class Casino(Interface):
         intro_label = tk.Label(game_window, text="Blackjack", bg='#bfac88')
         hands_label = tk.Label(game_window, text="Hands", bg='#bfac88')
         sum_text_label = tk.Label(game_window, text="Sum", bg='#bfac88')
-        dealer_label = tk.Label(dealer_frame, text=dealer)
-        player1_label = tk.Label(player_frame, text=player, padx=20)
+        dealer_label = tk.Label(dealer_frame, text=dealer, padx=20)
+        player1_label = tk.Label(player_frame, text=f'{player}: {player.getfichas()}', padx=20)
 
         # Cards Label
         # Dealer
