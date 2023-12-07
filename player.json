@@ -2,7 +2,7 @@
   {
     "nome": "Rafael Nascimento",
     "senha": "1234",
-    "fichas": 0
+    "fichas": 20
   },
   {
     "nome": "Roberto",
@@ -23,5 +23,15 @@
     "nome": "Inacio",
     "senha": "senha",
     "fichas": 220
+  },
+  {
+    "nome": "Teste",
+    "senha": "senha",
+    "fichas": 240
+  },
+  {
+    "nome": "Igor",
+    "senha": "senha1234",
+    "fichas": 180
   }
 ]
