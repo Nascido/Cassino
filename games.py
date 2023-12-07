@@ -104,9 +104,6 @@ class Player(Hand):
         else:
             raise ValueError
 
-    def receberFichas(self, valor):
-        self._fichas += valor
-
     # Getters
     def getname(self):
         return self._name
