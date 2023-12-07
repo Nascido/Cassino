@@ -1,4 +1,5 @@
 
+import json
 import tkinter as tk
 from tkinter import messagebox as mg
 from PIL import ImageTk as TkImg
@@ -7,7 +8,7 @@ from games import Player, Blackjack
 
 
 class Interface:
-    def __init__(self, usuarios):
+    def __init__(self, usuarios, aposta=20):
         self.users = usuarios
         self._usr = usuarios[0]
 
@@ -26,9 +27,18 @@ class Interface:
                     break
 
             if not registrado:
-                with open('players.txt', 'a') as file:
-                    registro = f"\n{username} - {password} - {fichas}"
-                    file.write(registro)
+                novo_usuario = {
+                    "nome": username,
+                    "senha": password,
+                    "fichas": fichas
+                }
+                with open('player.json', 'r') as file:
+                    usuarios = json.load(file)
+
+                usuarios.append(novo_usuario)
+
+                with open('player.json', 'w') as file:
+                    json.dump(usuarios, file, indent=2)
 
                 self.users.append(Player(username, password, fichas))
                 mg.showinfo("Cadastro", "Usuário cadastrado com Sucesso")
@@ -130,9 +140,16 @@ class Casino(Interface):
     def __init__(self, players):
         super().__init__(players)
         self.caixa = 5000
+        self._apostaInicial = 20
 
     def acess(self):
-        self.blackjack()
+        fichas = self._usr.getfichas()
+
+        if fichas >= self._apostaInicial:
+            self.blackjack()
+
+        else:
+            mg.showinfo(title="Fichas Insuficientes!", message="Você não possui fichas suficientes para jogar!")
 
     def show(self):
         firstwindow = tk.Tk()
@@ -153,7 +170,7 @@ class Casino(Interface):
         global times_hitted
         times_hitted = 0
 
-        game = Blackjack([self._usr])
+        game = Blackjack([self._usr], apostaInicial=self._apostaInicial)
         dealer = game.getdealer()
         player = self._usr
         game.iniciar()
@@ -167,7 +184,7 @@ class Casino(Interface):
         # Commands
         def restart():
             game_window.destroy()
-            self.blackjack()
+            self.acess()
 
         def hit():
             global times_hitted
@@ -305,6 +322,8 @@ class Casino(Interface):
 
             player_money = player.getfichas()
             mg.showinfo(title="Resultados", message=f"{info}\n\nSuas fichas: {player_money}           ")
+
+            player.atualizarFichas()
 
         # Frames
         dealer_frame = tk.Frame(game_window, bg='#bdbdbd')
