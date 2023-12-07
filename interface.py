@@ -165,6 +165,10 @@ class Casino(Interface):
         sum_player = f'{player.sum21()}'
 
         # Commands
+        def restart():
+            game_window.destroy()
+            self.blackjack()
+
 
         def hit():
             global times_hitted
@@ -266,6 +270,9 @@ class Casino(Interface):
 
             stay_button = tk.Button(button_frame, text="STAY", state="disabled")
             stay_button.place(relx=0.30, rely=0.15)
+
+            restart_button = tk.Button(game_window, text="RESTART", command=restart)
+            restart_button.place(relx=0.93, rely=0.88, relwidth=0.10, relheight=0.08, anchor='ne')
 
         # Frames
         dealer_frame = tk.Frame(game_window, bg='#bdbdbd')
