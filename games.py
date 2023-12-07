@@ -1,4 +1,5 @@
 from decks import Deck, Card
+import json
 
 
 class Game:
@@ -79,6 +80,20 @@ class Player(Hand):
     # Métodos do Player
     def testeFichas(self, valor):
         return self._fichas > valor
+
+    def atualizarFichas(self):
+        fichas = self._fichas
+        nome = self._name
+        with open('player.json', 'r') as file:
+            usuarios = json.load(file)
+
+        for usr in usuarios:
+            if usr["nome"] == nome:
+                usr["fichas"] = fichas
+                break
+
+        with open('player.json', 'w') as file:
+            json.dump(usuarios, file, indent=2)
 
     def ganhou(self, valor):
         self._fichas += valor
