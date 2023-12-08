@@ -1,0 +1,47 @@
+[
+  {
+    "nome": "Rafael Nascimento",
+    "senha": "1234",
+    "fichas": 0
+  },
+  {
+    "nome": "Roberto",
+    "senha": "senha",
+    "fichas": 300
+  },
+  {
+    "nome": "Luiz",
+    "senha": "facil",
+    "fichas": 200
+  },
+  {
+    "nome": "Miranda",
+    "senha": "1369",
+    "fichas": 180
+  },
+  {
+    "nome": "Inacio",
+    "senha": "senha",
+    "fichas": 220
+  },
+  {
+    "nome": "Teste",
+    "senha": "senha",
+    "fichas": 240
+  },
+  {
+    "nome": "Igor",
+    "senha": "senha1234",
+    "fichas": 180
+  },
+  {
+    "nome": "Novo",
+    "senha": "senha",
+    "fichas": 180
+  },
+  {
+    "nome": "Rodrigo",
+    "senha": "senha",
+    "fichas": 180
+  }
+]

@@ -1,14 +1,16 @@
 
+import json
 import tkinter as tk
 from tkinter import messagebox as mg
 from PIL import ImageTk as TkImg
+# from PIL import Image
 from games import Player, Blackjack
 
 
 class Interface:
-    def __init__(self, usuarios):
+    def __init__(self, usuarios, aposta=20):
         self.users = usuarios
-        self._usr = None
+        self._usr = usuarios[0]
 
     def register(self):
         def saveInfo():
@@ -25,9 +27,18 @@ class Interface:
                     break
 
             if not registrado:
-                with open('players.txt', 'a') as file:
-                    registro = f"\n{username} - {password} - {fichas}"
-                    file.write(registro)
+                novo_usuario = {
+                    "nome": username,
+                    "senha": password,
+                    "fichas": fichas
+                }
+                with open('player.json', 'r') as file:
+                    usuarios = json.load(file)
+
+                usuarios.append(novo_usuario)
+
+                with open('player.json', 'w') as file:
+                    json.dump(usuarios, file, indent=2)
 
                 self.users.append(Player(username, password, fichas))
                 mg.showinfo("Cadastro", "Usuário cadastrado com Sucesso")
@@ -129,9 +140,16 @@ class Casino(Interface):
     def __init__(self, players):
         super().__init__(players)
         self.caixa = 5000
+        self._apostaInicial = 20
 
     def acess(self):
-        self.blackjack()
+        fichas = self._usr.getfichas()
+
+        if fichas >= self._apostaInicial:
+            self.blackjack()
+
+        else:
+            mg.showinfo(title="Fichas Insuficientes!", message="Você não possui fichas suficientes para jogar!")
 
     def show(self):
         firstwindow = tk.Tk()
@@ -149,72 +167,230 @@ class Casino(Interface):
         firstwindow.mainloop()
 
     def blackjack(self):
-        game = Blackjack(self.users)
+        global times_hitted
+        times_hitted = 0
+
+        game = Blackjack([self._usr], apostaInicial=self._apostaInicial)
         dealer = game.getdealer()
-        players = game.getplayers()
+        player = self._usr
         game.iniciar()
 
-        player = players[0]
-
-        game_window = tk.Tk()
+        game_window = tk.Toplevel()
         game_window.title("Blackjack Game")
+        game_window.geometry("800x500")
+
+        sum_player = f'{player.sum21()}'
+
+        # Commands
+        def restart():
+            game_window.destroy()
+            self.acess()
+
+        def hit():
+            global times_hitted
+            global sum_player_label
+            global sum_player
+            global card2_player
+            global card3_player
+            global card4_player
+            global card5_player
+            global hit_button
+
+            hited = game.hit(player)
+
+            if hited:
+                if times_hitted == 0:
+                    card2_player = TkImg.PhotoImage(player[2].display())
+                    card2_player_label = tk.Label(player_card_frame, image=card2_player)
+                    card2_player_label.grid(row=0, column=2)
+                    times_hitted += 1
+
+                elif times_hitted == 1:
+                    card3_player = TkImg.PhotoImage(player[3].display())
+                    card3_player_label = tk.Label(player_card_frame, image=card3_player)
+                    card3_player_label.grid(row=0, column=3)
+                    times_hitted += 1
+
+                elif times_hitted == 2:
+                    card4_player = TkImg.PhotoImage(player[4].display())
+                    card4_player_label = tk.Label(player_card_frame, image=card4_player)
+                    card4_player_label.grid(row=0, column=4)
+                    times_hitted += 1
+
+                elif times_hitted == 3:
+                    card5_player = TkImg.PhotoImage(player[5].display())
+                    card5_player_label = tk.Label(player_card_frame, image=card5_player)
+                    card5_player_label.grid(row=0, column=5)
+                    times_hitted += 1
+
+                sum_player = player.sum21()
+                sum_player_label = tk.Label(game_window, text=f'{sum_player}')
+                sum_player_label.place(relx=0.98, rely=0.56, relwidth=0.20, relheight=0.3, anchor='ne')
+
+                if sum_player >= 21:
+                    hit_button = tk.Button(button_frame, text="HIT", state="disabled")
+                    hit_button.place(relx=0.60, rely=0.15)
+                    stay()
+
+        def stay():
+            global hit_button
+            global stay_button
+            global sum_dealer
+            global sum_player
+            global sum_dealer_label
+            global card0_dealer
+            global card0_dealer_label
+            global card1_dealer
+            global card1_dealer_label
+            global card2_dealer
+            global card3_dealer
+            global card4_dealer
+            global card5_dealer
+
+            card0_dealer = TkImg.PhotoImage(dealer[0].display())
+            card0_dealer_label = tk.Label(dealer_card_frame, image=card0_dealer)
+            card0_dealer_label.grid(row=0, column=0)
+
+            card1_dealer = TkImg.PhotoImage(dealer[1].display())
+            card1_dealer_label = tk.Label(dealer_card_frame, image=card1_dealer)
+            card1_dealer_label.grid(row=0, column=1)
+
+            sum_dealer = dealer.sum21()
+            sum_dealer_label = tk.Label(game_window, text=sum_dealer)
+            sum_dealer_label.place(relx=0.98, rely=0.24, relwidth=0.20, relheight=0.3, anchor='ne')
+
+            while sum_dealer < 17:
+                game.dealerhit()
+                tam_dealer = len(dealer)
+
+                for i in range(2, tam_dealer):
+                    if i == 2:
+                        card2_dealer = TkImg.PhotoImage(dealer[2].display())
+                        card2_dealer_label = tk.Label(dealer_card_frame, image=card2_dealer)
+                        card2_dealer_label.grid(row=0, column=2)
+
+                    elif i == 3:
+                        card3_dealer = TkImg.PhotoImage(dealer[3].display())
+                        card3_dealer_label = tk.Label(dealer_card_frame, image=card3_dealer)
+                        card3_dealer_label.grid(row=0, column=3)
+
+                    elif i == 4:
+                        card4_dealer = TkImg.PhotoImage(dealer[4].display())
+                        card4_dealer_label = tk.Label(dealer_card_frame, image=card4_dealer)
+                        card4_dealer_label.grid(row=0, column=4)
+
+                    sum_dealer = dealer.sum21()
+                    sum_dealer_label = tk.Label(game_window, text=sum_dealer)
+                    sum_dealer_label.place(relx=0.98, rely=0.24, relwidth=0.20, relheight=0.3, anchor='ne')
+
+            hit_button = tk.Button(button_frame, text="HIT", state="disabled")
+            hit_button.place(relx=0.60, rely=0.15)
+
+            stay_button = tk.Button(button_frame, text="STAY", state="disabled")
+            stay_button.place(relx=0.30, rely=0.15)
+
+            restart_button = tk.Button(game_window, text="RESTART", command=restart)
+            restart_button.place(relx=0.93, rely=0.88, relwidth=0.10, relheight=0.08, anchor='ne')
+
+            sum_player = player.sum21()
+
+            if sum_dealer <= 21:
+                if sum_player <= 21:
+                    if sum_player > sum_dealer:
+                        info = "VOCÊ GANHOU!"
+
+                    elif sum_player < sum_dealer:
+                        info = "VOCÊ PERDEU!"
+
+                    else:
+                        info = "VOCÊ EMPATOU!"
+
+                else:
+                    info = "VOCÊ PERDEU!"
+            else:
+                if sum_player <= 21:
+                    info = "VOCÊ GANHOU!"
+
+                else:
+                    info = "VOCÊ EMPATOU!"
+
+            if info == "VOCÊ GANHOU!":
+                game.winner(player)
+
+            elif info == "VOCÊ PERDEU!":
+                game.loser(player)
+
+            player_money = player.getfichas()
+            mg.showinfo(title="Resultados", message=f"{info}\n\nSuas fichas: {player_money}           ")
+
+            player.atualizarFichas()
 
         # Frames
-        dealer_frame = tk.Frame(game_window)
-        player_frame = tk.Frame(game_window)
-        button_frame = tk.Frame(game_window)
+        dealer_frame = tk.Frame(game_window, bg='#bdbdbd')
+        dealer_card_frame = tk.Frame(dealer_frame)
+        player_frame = tk.Frame(game_window, bg='#bdbdbd')
+        player_card_frame = tk.Frame(player_frame)
+        button_frame = tk.Frame(game_window, bg='#bdbdbd')
 
         # Cards Display
-        verso_dealer = True
-        card0_dealer = TkImg.PhotoImage(dealer[0].display(verso_dealer))
-        card1_dealer = TkImg.PhotoImage(dealer[1].display())
+        # Dealer
+        card0_dealer = TkImg.PhotoImage(dealer[0].display())
+        card1_dealer = TkImg.PhotoImage(dealer[1].display(True))
 
+        # Player
         card0_player = TkImg.PhotoImage(player[0].display())
         card1_player = TkImg.PhotoImage(player[1].display())
 
         # Labels Texts
-        intro_label = tk.Label(game_window, text="Blackjack")
-        hands_label = tk.Label(game_window, text="Hands")
-        sum_text_label = tk.Label(game_window, text="Sum")
-        dealer_label = tk.Label(dealer_frame, text=dealer)
-        player1_label = tk.Label(player_frame, text=player)
+        intro_label = tk.Label(game_window, text="Blackjack", bg='#bfac88')
+        hands_label = tk.Label(game_window, text="Hands", bg='#bfac88')
+        sum_text_label = tk.Label(game_window, text="Sum", bg='#bfac88')
+        dealer_label = tk.Label(dealer_frame, text=dealer, padx=20)
+        player1_label = tk.Label(player_frame, text=f'{player}: {player.getfichas()}', padx=20)
 
         # Cards Label
-        card0_dealer_label = tk.Label(dealer_frame, image=card0_dealer)
-        card1_dealer_label = tk.Label(dealer_frame, image=card1_dealer)
-        card0_player_label = tk.Label(player_frame, image=card0_player)
-        card1_player_label = tk.Label(player_frame, image=card1_player)
+        # Dealer
+        card0_dealer_label = tk.Label(dealer_card_frame, image=card0_dealer)
+        card1_dealer_label = tk.Label(dealer_card_frame, image=card1_dealer)
+
+        # Player
+        card0_player_label = tk.Label(player_card_frame, image=card0_player)
+        card1_player_label = tk.Label(player_card_frame, image=card1_player)
 
         # Sum Label
-        if verso_dealer:
-            sum_dealer = '?'
 
-        else:
-            sum_dealer = f'{dealer.sum21()}'
-
+        sum_dealer = '?'
         sum_dealer_label = tk.Label(game_window, text=sum_dealer)
-
-        sum_player = f'{player.sum21()}'
         sum_player_label = tk.Label(game_window, text=sum_player)
 
+        # Buttons
+        hit_button = tk.Button(button_frame, text="HIT", command=hit)
+        stay_button = tk.Button(button_frame, text="STAY", command=stay)
+
         # Placing Widgets Game Window
-        intro_label.grid(row=0, column=1, columnspan=2)
-        hands_label.grid(row=1, column=0)
-        sum_text_label.grid(row=1, column=1)
-        dealer_frame.grid(row=2, column=0)
-        sum_dealer_label.grid(row=2, column=1)
-        player_frame.grid(row=3, column=0)
-        sum_player_label.grid(row=3, column=1)
-        button_frame.grid(row=4, column=1, columnspan=2)
+        intro_label.place(relx=0.02, rely=0.02, relwidth=0.96, relheight=0.09)
+        hands_label.place(relx=0.02, rely=0.13, relwidth=0.74, relheight=0.09)
+        sum_text_label.place(relx=0.98, rely=0.13, relwidth=0.20, relheight=0.09, anchor='ne')
+        dealer_frame.place(relx=0.02, rely=0.24, relwidth=0.74, relheight=0.3)
+        player_frame.place(relx=0.02, rely=0.56, relwidth=0.74, relheight=0.3)
+        sum_dealer_label.place(relx=0.98, rely=0.24, relwidth=0.20, relheight=0.3, anchor='ne')
+        sum_player_label.place(relx=0.98, rely=0.56, relwidth=0.20, relheight=0.3, anchor='ne')
+        button_frame.place(relx=0.02, rely=0.97, relwidth=0.74, relheight=0.09, anchor='sw')
 
-        # Placing Widgets Dealer Frame
-        dealer_label.grid(row=0, column=0)
-        card0_dealer_label.grid(row=1, column=0)
-        card1_dealer_label.grid(row=1, column=1)
+        # Placing Widgets on dealer Frame
+        dealer_label.pack()
+        dealer_card_frame.pack()
+        card0_dealer_label.grid(row=0, column=0)
+        card1_dealer_label.grid(row=0, column=1)
 
-        # Placing Widgets Player Frame
-        player1_label.grid(row=0, column=0)
-        card0_player_label.grid(row=1, column=0)
-        card1_player_label.grid(row=1, column=1)
+        # Placing Widgets on Player Frame
+        player1_label.pack()
+        player_card_frame.pack()
+        card0_player_label.grid(row=0, column=0)
+        card1_player_label.grid(row=0, column=1)
+
+        # Placing Widgets on Button Frame
+        hit_button.place(relx=0.60, rely=0.15)
+        stay_button.place(relx=0.30, rely=0.15)
 
         game_window.mainloop()

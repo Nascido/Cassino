@@ -1,4 +1,5 @@
 from decks import Deck, Card
+import json
 
 
 class Game:
@@ -80,15 +81,28 @@ class Player(Hand):
     def testeFichas(self, valor):
         return self._fichas > valor
 
-    def apostar(self, valor):
+    def atualizarFichas(self):
+        fichas = self._fichas
+        nome = self._name
+        with open('player.json', 'r') as file:
+            usuarios = json.load(file)
+
+        for usr in usuarios:
+            if usr["nome"] == nome:
+                usr["fichas"] = fichas
+                break
+
+        with open('player.json', 'w') as file:
+            json.dump(usuarios, file, indent=2)
+
+    def ganhou(self, valor):
+        self._fichas += valor
+
+    def perdeu(self, valor):
         if self._fichas >= valor:
             self._fichas -= valor
-            return valor
         else:
             raise ValueError
-
-    def receberFichas(self, valor):
-        self._fichas += valor
 
     # Getters
     def getname(self):
@@ -147,7 +161,7 @@ class Blackjack(Game):
     def __init__(self, players, caixa=10000, apostaInicial=20) -> None:
         super().__init__(players)
         self._dealer = Dealer(blackjack=True)
-        self._apostaInicial = apostaInicial
+        self.apostaInicial = apostaInicial
         self._caixa = caixa
 
     def iniciar(self):
@@ -157,8 +171,10 @@ class Blackjack(Game):
     def hit(self, player):
         if player.sum21() < 21:
             self._dealer.deck.givecard(player)
+            return True
         else:
-            raise ValueError("Valor 21 já alcançado ou estourado")
+            print("Valor 21 já alcançado ou estourado")
+            return False
 
     def dealerhit(self):
         if self._dealer.sum21() < 17:
@@ -200,6 +216,14 @@ class Blackjack(Game):
             print(f"{player}: {player.sum21()}")
 
         print(f"{self._dealer}: {self._dealer.sum21()}")
+
+    def winner(self, player):
+        player.ganhou(self.apostaInicial)
+        self._caixa -= self.apostaInicial
+
+    def loser(self, player):
+        player.perdeu(self.apostaInicial)
+        self._caixa -= self.apostaInicial
 
     def getdealer(self):
         return self._dealer
