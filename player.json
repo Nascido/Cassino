@@ -2,7 +2,7 @@
   {
     "nome": "Rafael Nascimento",
     "senha": "1234",
-    "fichas": 20
+    "fichas": 0
   },
   {
     "nome": "Roberto",
@@ -32,6 +32,16 @@
   {
     "nome": "Igor",
     "senha": "senha1234",
+    "fichas": 180
+  },
+  {
+    "nome": "Novo",
+    "senha": "senha",
+    "fichas": 180
+  },
+  {
+    "nome": "Rodrigo",
+    "senha": "senha",
     "fichas": 180
   }
 ]
